@@ -7,38 +7,87 @@ def date():
     p.create_rectangle(0, 0, 450, 40, fill="orange", outline="orange")
     p.create_text(450/2, 20, text=current_time, font=('Times New Roman', 15))
 
+def branko():
+    pass
+
+def drunk_branko():
+    pass
+
+def risko():
+    pass
+
+def drunk_risko():
+    pass
+
+def new_day():
+    with open("today.txt", "r") as today:
+        with open("yesterday.txt", "w") as yesterday:
+            for line in today:
+                print(line.strip(), file=yesterday)
+    
+    with open("today.txt", "w") as today:
+        print(0, file=today)
+        print(0, file=today)
+        print(0, file=today)
+        print(0, file=today)
+        print(0, file=today)
+
+def today():
+    with open("today.txt", "r") as f:
+        sopkovica = int(f.readline())
+        rum = int(f.readline())
+        punc = int(f.readline())
+        medova = int(f.readline())
+        cervene_vinko = int(f.readline())
+
+        print(sopkovica)
+        print(rum)
+        print(punc)
+        print(medova)
+        print(cervene_vinko)
+
+def yesterday():
+    with open("yesterday.txt", "r") as f:
+        sopkovica = int(f.readline())
+        rum = int(f.readline())
+        punc = int(f.readline())
+        medova = int(f.readline())
+        cervene_vinko = int(f.readline())
+
+        print(sopkovica)
+        print(rum)
+        print(punc)
+        print(medova)
+        print(cervene_vinko)
+
 def optional_buttons():
-    b1 = Button(o, text="Nový deň", width=63, height=2)
+    b1 = Button(o, text="Nový deň", command=new_day, width=63, height=2)
     b1.place(x=1, y=40)
 
-    b2 = Button(o, text="Dnešný predaj zmrzliny", width=63, height=2)
+    b2 = Button(o, text="Dnešný predaj zmrzliny", command=today, width=63, height=2)
     b2.place(x=1, y=40*2)
 
-    b3 = Button(o, text="Včerajší predaj zmrzliny", width=63, height=2)
+    b3 = Button(o, text="Včerajší predaj zmrzliny",command=yesterday, width=63, height=2)
     b3.place(x=1, y=40*3)
 
-    b4 = Button(o, text="Koniec", width=63, height=2)
+    b4 = Button(o, text="Koniec", command=o.destroy, width=63, height=2)
     b4.place(x=1, y=40*4)
 
 def alko_buttons():
-    b1 = Button(o, text="Punč", width=11, height=2)
+    b1 = Button(o, text="Sopkovica", width=11, height=2)
     b1.place(x=W/5*0+5, y=H-40)
 
-    b2 = Button(o, text="Vínko", width=10, height=2)
+    b2 = Button(o, text="Rum", width=10, height=2)
     b2.place(x=W/5*1+5, y=H-40)
 
-    b3 = Button(o, text="Sopkovica", width=10, height=2)
+    b3 = Button(o, text="Punč", width=10, height=2)
     b3.place(x=W/5*2+5, y=H-40)
 
-    b4 = Button(o, text="Borovička", width=10, height=2)
+    b4 = Button(o, text="Medová 14°", width=10, height=2)
     b4.place(x=W/5*3+5, y=H-40)
 
-    b5 = Button(o, text="Sopkovica", width=10, height=2)
+    b5 = Button(o, text="Červené vínko", width=10, height=2)
     b5.place(x=W/5*4+5, y=H-40)
-
-
-def persons():
-    pass
 
 def menu():
     date()
@@ -48,16 +97,10 @@ def menu():
 W = 450
 H = 600
 o = Tk()
+o.title("Usmej sa :)")
 p = tk.Canvas(width=W, height=H)
 p.pack()
 
 menu()
-"""
-p.create_rectangle(0, 560, 450/5, 600, fill="green", outline="green")
-p.create_rectangle(450/5, 560, 450/5*2, 600, fill="red", outline="red")
-p.create_rectangle(450/5*2, 560, 450/5*3, 600, fill="pink", outline="pink")
-p.create_rectangle(450/5*3, 560, 450/5*4, 600, fill="purple", outline="purple")
-p.create_rectangle(450/5*4, 560, 450, 600, fill="yellow", outline="yellow")
-"""
 
 p.mainloop()
