@@ -32,26 +32,14 @@ def new_day():
         print(0, file=today)
 
 def today():
-    with open("today.txt", "r") as f:
-        sopkovica = int(f.readline())
-        rum = int(f.readline())
-        punc = int(f.readline())
-        medova = int(f.readline())
-        cervene_vinko = int(f.readline())
+    global dnes
+    dnes = True
+    draw()
 
 def yesterday():
-    with open("yesterday.txt", "r") as f:
-        sopkovica = int(f.readline())
-        rum = int(f.readline())
-        punc = int(f.readline())
-        medova = int(f.readline())
-        cervene_vinko = int(f.readline())
-
-        print(sopkovica)
-        print(rum)
-        print(punc)
-        print(medova)
-        print(cervene_vinko)
+    global dnes
+    dnes = False
+    draw()
 
 def sopkovica():
     with open("today.txt", "r") as read:
@@ -116,15 +104,24 @@ def cervene_vinko():
 def draw():
     p.delete("all")
     date()
+
+    global dnes
     
-    with open("today.txt", "r") as read:
-        lines = read.readlines()
+    if dnes == True:
+        with open("today.txt", "r") as read:
+            lines = read.readlines()
+    else:
+        with open("yesterday.txt", "r") as read:
+            lines = read.readlines()
 
     sum = 0
     for i in range(5):
         lines[i] = int(lines[i])
         sum += lines[i]
     
+    if sum == 0:
+        sum = 1
+
     for i in range(5):
         p.create_rectangle(W/5*i+5, H-80, W/5*i+80, H-80 - lines[i]/sum * 200, fill="blue")
         p.create_text(40+90*i, 535, text=str(lines[i]))
@@ -143,19 +140,19 @@ def optional_buttons():
     b4.place(x=1, y=40*4)
 
 def alko_buttons():
-    b1 = Button(o, text="Sopkovica", command=sopkovica, width=11, height=2)
+    b1 = Button(o, text="Sopkovica",fg='white',command=sopkovica,bg='black', width=11, height=2)
     b1.place(x=W/5*0+5, y=H-40)
 
-    b2 = Button(o, text="Rum", command=rum, width=10, height=2)
+    b2 = Button(o, text="Rum",command=rum,bg='#8C4103', width=10, height=2)
     b2.place(x=W/5*1+5, y=H-40)
 
-    b3 = Button(o, text="Punč", command=punc, width=10, height=2)
+    b3 = Button(o, text="Punč",command=punc,bg='dark red', width=10, height=2)
     b3.place(x=W/5*2+5, y=H-40)
 
-    b4 = Button(o, text="Medová 14°", command=medova, width=10, height=2)
+    b4 = Button(o, text="Medová 14°",command=medova,bg='yellow', width=10, height=2)
     b4.place(x=W/5*3+5, y=H-40)
 
-    b5 = Button(o, text="Červené vínko",command=cervene_vinko, width=10, height=2)
+    b5 = Button(o, text="Červené vínko",command=cervene_vinko,bg='red', width=10, height=2)
     b5.place(x=W/5*4+5, y=H-40)
 
 def menu():
