@@ -3,7 +3,8 @@ import tkinter as tk
 from tkinter import *
 
 def date():
-    current_time = dt.datetime.now().strftime("%d.%m.%Y")
+    current_time = dt.date.today() + dt.timedelta(days=d)
+    current_time = current_time.strftime("%d.%m.%Y")
     p.create_rectangle(0, 0, 450, 40, fill="orange", outline="orange")
     p.create_text(450/2, 20, text=current_time, font=('Times New Roman', 15))
 
@@ -20,6 +21,10 @@ def drunk_risko():
     pass
 
 def new_day():
+    global d
+    d += 1
+    date()
+
     with open("today.txt", "r") as today:
         with open("yesterday.txt", "w") as yesterday:
             for line in today:
@@ -100,6 +105,7 @@ o = Tk()
 o.title("Usmej sa :)")
 p = tk.Canvas(width=W, height=H)
 p.pack()
+d = 0
 
 menu()
 
