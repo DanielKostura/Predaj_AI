@@ -19,15 +19,26 @@ def text():
     elif dnes == False:
         with open("yesterday.txt", "r") as read:
             lines = read.readlines()
-    
+    # 1 text
+    metanol = int(lines[0])*5*1 # mnozstvo alkoholu * % alkoholu v tom
+    etanol = int(lines[1])*5*0.375 + int(lines[2])*3*0.1 + int(lines[3])*50*0.14 + int(lines[4])*2*0.11 # mnozstvo alkoholu * % alkoholu v tom
+    etanol = round(etanol, 2)
+
+    p.create_text(450/4, 40*5.5, text=f"Predaný etanol: {etanol}(dl)", font=("Arial", 15))
+    p.create_text(450/4*3, 40*5.5, text=f"Predaný metanol: {metanol}(dl)", font=("Arial", 15))
+
+    # 2 text
     max = 0
-    nums = []
-    drink = []
     for i in range(5):
         sum += int(lines[i])
         if int(lines[i]) > max:
             max = int(lines[i])
     
+    p.create_text(450/2, 40*6.5, text=f"Dnes sa predalo {sum} nápojov.", font=("Arial", 15))
+
+    # 3 text
+    nums = []
+    drink = []
     for i in range(5):
         if int(lines[i]) == max:
             nums.append(i)
@@ -44,18 +55,16 @@ def text():
         elif i == 4:
             drink.append("Červené vínko")
 
-    p.create_text(450/2, 40*5.5, text=f"Dnes sa predalo {sum} nápojov.", font=("Arial", 15))
-
     if len(drink) == 1:
-        p.create_text(450/2, 40*6.5, text=f"Obľubený nápoj: {drink[0]}", font=("Arial", 15))
+        p.create_text(450/2, 40*7.5, text=f"Obľubený nápoj: {drink[0]}", font=("Arial", 15))
     elif len(drink) == 2:
-        p.create_text(450/2, 40*6.5, text=f"Obľubené nápoje: {drink[0]}, {drink[1]}", font=("Arial", 15))
+        p.create_text(450/2, 40*7.5, text=f"Obľubené nápoje: {drink[0]}, {drink[1]}", font=("Arial", 15))
     elif len(drink) == 3:
-        p.create_text(450/2, 40*6.5, text=f"Obľubené nápoje: {drink[0]}, {drink[1]},", font=("Arial", 15))
-        p.create_text(450/2, 40*7.5, text=f"{drink[2]}", font=("Arial", 15))
+        p.create_text(450/2, 40*7.5, text=f"Obľubené nápoje: {drink[0]}, {drink[1]},", font=("Arial", 15))
+        p.create_text(450/2, 40*8.5, text=f"{drink[2]}", font=("Arial", 15))
     elif len(drink) == 4:
-        p.create_text(450/2, 40*6.5, text=f"Obľubené nápoje: {drink[0]}, {drink[1]},", font=("Arial", 15))
-        p.create_text(450/2, 40*7.5, text=f"{drink[2]}, {drink[3]}", font=("Arial", 15))
+        p.create_text(450/2, 40*7.5, text=f"Obľubené nápoje: {drink[0]}, {drink[1]},", font=("Arial", 15))
+        p.create_text(450/2, 40*8.5, text=f"{drink[2]}, {drink[3]}", font=("Arial", 15))
 
 def new_day():
     global d
@@ -186,15 +195,27 @@ def draw():
             lines = read.readlines()
 
     sum = 0
+    max_value = 0
+    max_indices = []  
+
     for i in range(5):
         lines[i] = int(lines[i])
         sum += lines[i]
-    
+
+        if lines[i] > max_value:
+            max_value = lines[i]
+            max_indices = [i]  
+        elif lines[i] == max_value:
+            max_indices.append(i) 
+
     if sum == 0:
         sum = 1
 
     for i in range(5):
-        p.create_rectangle(W/5*i+5, H-80, W/5*i+80, H-80 - lines[i]/sum * 200, fill="blue")
+        if i in max_indices:
+            p.create_rectangle(W/5*i+5, H-80, W/5*i+80, H-80 - lines[i]/sum * 200, fill="orange")
+        else:
+            p.create_rectangle(W/5*i+5, H-80, W/5*i+80, H-80 - lines[i]/sum * 200, fill="blue")
         p.create_text(40+90*i, 535, text=str(lines[i]))
 
 def optional_buttons():
