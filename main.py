@@ -8,11 +8,54 @@ def date():
     p.create_rectangle(0, 0, 450, 40, fill="orange", outline="orange")
     p.create_text(450/2, 20, text=current_time, font=('Times New Roman', 15))
 
-def branko(sopkovica):
-    pass
+def text():
+    global dnes
 
-def risko():
-    pass
+    sum = 0
+    if dnes == True:
+        with open("today.txt", "r") as read:
+            lines = read.readlines()
+    
+    elif dnes == False:
+        with open("yesterday.txt", "r") as read:
+            lines = read.readlines()
+    
+    max = 0
+    nums = []
+    drink = []
+    for i in range(5):
+        sum += int(lines[i])
+        if int(lines[i]) > max:
+            max = int(lines[i])
+    
+    for i in range(5):
+        if int(lines[i]) == max:
+            nums.append(i)
+    
+    for i in nums:
+        if i == 0:
+            drink.append("Spokovica")
+        elif i == 1:
+            drink.append("Rum")
+        elif i == 2:
+            drink.append("Punč")
+        elif i == 3:
+            drink.append("Medová 14°")
+        elif i == 4:
+            drink.append("Červené vínko")
+
+    p.create_text(450/2, 40*5.5, text=f"Dnes sa predalo {sum} nápojov.", font=("Arial", 15))
+
+    if len(drink) == 1:
+        p.create_text(450/2, 40*6.5, text=f"Obľubený nápoj: {drink[0]}", font=("Arial", 15))
+    elif len(drink) == 2:
+        p.create_text(450/2, 40*6.5, text=f"Obľubené nápoje: {drink[0]}, {drink[1]}", font=("Arial", 15))
+    elif len(drink) == 3:
+        p.create_text(450/2, 40*6.5, text=f"Obľubené nápoje: {drink[0]}, {drink[1]},", font=("Arial", 15))
+        p.create_text(450/2, 40*7.5, text=f"{drink[2]}", font=("Arial", 15))
+    elif len(drink) == 4:
+        p.create_text(450/2, 40*6.5, text=f"Obľubené nápoje: {drink[0]}, {drink[1]},", font=("Arial", 15))
+        p.create_text(450/2, 40*7.5, text=f"{drink[2]}, {drink[3]}", font=("Arial", 15))
 
 def new_day():
     global d
@@ -30,6 +73,8 @@ def new_day():
         print(0, file=today)
         print(0, file=today)
         print(0, file=today)
+    
+    draw()
 
 def today():
     global dnes
@@ -42,6 +87,11 @@ def yesterday():
     draw()
 
 def sopkovica():
+    global dnes
+
+    if dnes == False:
+        return
+    
     with open("today.txt", "r") as read:
         lines = read.readlines()
         count_sopkovica = int(lines[0]) + 1
@@ -54,6 +104,11 @@ def sopkovica():
     draw()
 
 def rum():
+    global dnes
+
+    if dnes == False:
+        return
+    
     with open("today.txt", "r") as read:
         lines = read.readlines()
         count_rum = int(lines[1]) + 1
@@ -66,6 +121,11 @@ def rum():
     draw()
 
 def punc():
+    global dnes
+
+    if dnes == False:
+        return
+    
     with open("today.txt", "r") as read:
         lines = read.readlines()
         count_punc = int(lines[2]) + 1
@@ -78,6 +138,11 @@ def punc():
     draw()
 
 def medova():
+    global dnes
+
+    if dnes == False:
+        return
+    
     with open("today.txt", "r") as read:
         lines = read.readlines()
         count_medova = int(lines[3]) + 1
@@ -90,6 +155,11 @@ def medova():
     draw()
 
 def cervene_vinko():
+    global dnes
+
+    if dnes == False:
+        return
+    
     with open("today.txt", "r") as read:
         lines = read.readlines()
         count_cervene_vinko = int(lines[4]) + 1
@@ -104,6 +174,7 @@ def cervene_vinko():
 def draw():
     p.delete("all")
     date()
+    text()
 
     global dnes
     
@@ -140,23 +211,24 @@ def optional_buttons():
     b4.place(x=1, y=40*4)
 
 def alko_buttons():
-    b1 = Button(o, text="Sopkovica",fg='white',command=sopkovica,bg='black', width=11, height=2)
+    b1 = Button(o, text="Sopkovica",fg='white', command=sopkovica, bg='black', width=11, height=2)
     b1.place(x=W/5*0+5, y=H-40)
 
-    b2 = Button(o, text="Rum",command=rum,bg='#8C4103', width=10, height=2)
+    b2 = Button(o, text="Rum", command=rum, bg='#8C4103', width=10, height=2)
     b2.place(x=W/5*1+5, y=H-40)
 
-    b3 = Button(o, text="Punč",command=punc,bg='dark red', width=10, height=2)
+    b3 = Button(o, text="Punč", command=punc, bg='dark red', width=10, height=2)
     b3.place(x=W/5*2+5, y=H-40)
 
-    b4 = Button(o, text="Medová 14°",command=medova,bg='yellow', width=10, height=2)
+    b4 = Button(o, text="Medová 14°", command=medova, bg='yellow', width=10, height=2)
     b4.place(x=W/5*3+5, y=H-40)
 
-    b5 = Button(o, text="Červené vínko",command=cervene_vinko,bg='red', width=10, height=2)
+    b5 = Button(o, text="Červené vínko", command=cervene_vinko, bg='red', width=10, height=2)
     b5.place(x=W/5*4+5, y=H-40)
 
 def menu():
     date()
+    text()
     draw()
     alko_buttons()
     optional_buttons()
@@ -172,4 +244,5 @@ d = 0
 dnes = True
 
 menu()
+
 p.mainloop()
